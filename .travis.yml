@@ -1,26 +1,19 @@
-sudo: required
-python:
-  - "2.7"
-
-# Clean and don't fail
-install:
-  - sudo pip install pygments
-  - wget -O /tmp/hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.24.1/hugo_0.24.1_Linux-64bit.deb
-  - sudo dpkg -i /tmp/hugo.deb
-  - rm -rf public || exit 0
-
-# Build the website
+sudo: false
+language: go
+git:
+    depth: 1
+install: go get -v github.com/gohugoio/hugo
 script:
-  - pygmentize -V
-  - git submodule update --init --recursive
-  - hugo -v
-
-# Deploy to GitHub pages
+    ‐ hugo
 deploy:
-  provider: pages
-  skip_cleanup: true
-  local_dir: public
-  target-branch: master
-  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
-  on:
-    branch: deploy
+    provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    on:
+        branch: master
+    local_dir: public
+    repo: upsoar-me/upsoar-me.github.io
+    fqdn: blog.upsoar.me
+    target_branch: master
+    email: pythme@163.com
+    name: upsoar-me
